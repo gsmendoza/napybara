@@ -1,0 +1,19 @@
+<html>
+  <body>
+    <form>
+      <button class="update">Update</button>
+      <div class="notice">Old content.</div>
+    </form>
+
+    <script src="/jquery-1.11.0.js"></script>
+    <script type="text/javascript">
+      $('.update').on('click', function(event) {
+        $.get('/new_content.html', function(data) {
+          $('.notice').text(data);
+        });
+        event.preventDefault();
+      });
+    </script>
+
+  </body>
+</html>

@@ -1,5 +1,7 @@
+module Napybara
+end
+
+require "napybara/dsl"
+require "napybara/element"
 require "napybara/version"
 
-module Napybara
-  # Your code goes here...
-end
