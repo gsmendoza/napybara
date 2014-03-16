@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Napybara::VERSION
   spec.authors       = ["George Mendoza"]
   spec.email         = ["gsmendoza@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{napybara == nested capybara}
+  spec.description   = %q{DSL for nesting capybara helpers}
   spec.homepage      = ""
   spec.license       = "MIT"
 
