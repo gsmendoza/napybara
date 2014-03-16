@@ -10,10 +10,9 @@ describe Napybara::DSL do
   end
 
   describe '.build' do
-    it 'returns an element delegating to the capybara_page' do
+    it 'returns the capybara_page as is' do
       element = described_class.build(capybara_page)
-      expect(element).to be_a(Napybara::Element)
-      expect(element.__getobj__).to eq(capybara_page)
+      expect(element).to eq(capybara_page)
     end
 
     it 'adds child elements from the block to the return element' do

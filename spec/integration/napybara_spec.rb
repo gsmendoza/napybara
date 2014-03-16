@@ -2,7 +2,7 @@ require 'capybara/poltergeist'
 require 'spec_helper'
 require 'dummy_app/dummy_app'
 
-describe Napybara::Element do
+describe Napybara do
   describe '#has_content?' do
     describe 'waits for Ajax events to complete before processing' do
       let(:session) do

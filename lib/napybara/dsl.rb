@@ -1,7 +1,8 @@
 module Napybara
   class DSL < Struct.new(:element)
     def self.build(capybara_node, &block)
-      Element.new(capybara_node).tap do |element|
+      @element = capybara_node
+      capybara_node.tap do |element|
         dsl_instance = new(element)
         dsl_instance.instance_eval(&block) if block_given?
       end
