@@ -1,0 +1,64 @@
+# Refer to https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+# for the default rubocop configuration.
+
+AllCops:
+  Excludes:
+    - db/schema.rb
+    - db/fixtures/development/cooking_methods.rb
+    - db/fixtures/development/main_ingredients.rb
+    - db/fixtures/development/recipe_categories.rb
+    - db/fixtures/development/special_occasions.rb
+    - db/fixtures/development/states.rb
+  Includes:
+    - '*.rake'
+    - Capfile
+    - Gemfile
+    - Guardfile
+
+AlignHash:
+  Enabled: false
+
+AlignParameters:
+  Enabled: false
+
+AsciiComments:
+  Enabled: false
+
+ClassLength:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+EmptyLines:
+  Enabled: false
+
+Encoding:
+  Enabled: false
+
+FavorUnlessOverNegatedIf:
+  Enabled: false
+
+IfUnlessModifier:
+  Enabled: false
+
+LineLength:
+  Max: 89
+
+MethodLength:
+  Max: 30
+
+MethodCalledOnDoEndBlock:
+  Enabled: true
+
+RedundantReturn:
+  AllowMultipleReturnValues: true
+
+RedundantSelf:
+  Enabled: false
+
+SignalException:
+  Enabled: false
+
+StringLiterals:
+  Enabled: false

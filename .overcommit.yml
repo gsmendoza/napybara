@@ -1,0 +1,4 @@
+PreCommit:
+  JsHint:
+    exclude:
+      - 'spec/dummy_app/public/jquery-1.11.0.js'
