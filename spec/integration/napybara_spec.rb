@@ -11,8 +11,10 @@ describe Napybara do
 
       let(:test_page) do
         Napybara::DSL.build(session) do
-          def element.visit!
-            visit '/test.html'
+          extend_element do
+            def visit!
+              visit '/test.html'
+            end
           end
 
           find :form, 'form' do

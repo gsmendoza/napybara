@@ -8,17 +8,22 @@ module Napybara
       end
     end
 
-    def find(child_element_name, child_element_selector, &block)
-      element.define_singleton_method(child_element_name) do
-        Napybara::DSL.build(self.find(child_element_selector), &block)
-      end
-    end
-
     def all(child_element_name, child_element_selector, &block)
       element.define_singleton_method(child_element_name) do
         self.all(child_element_selector).each do |child_element|
           Napybara::DSL.build(child_element, &block)
         end
+      end
+    end
+
+    def extend_element(a_module = Module.new, &block)
+      block_module = Module.new(&block)
+      element.extend(block_module, a_module)
+    end
+
+    def find(child_element_name, child_element_selector, &block)
+      element.define_singleton_method(child_element_name) do
+        Napybara::DSL.build(self.find(child_element_selector), &block)
       end
     end
   end

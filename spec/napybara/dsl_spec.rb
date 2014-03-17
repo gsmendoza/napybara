@@ -69,4 +69,53 @@ describe Napybara::DSL do
       expect(dsl.element.buttons[0].img.tag_name).to eq('img')
     end
   end
+
+  describe '#extend_element' do
+    it 'can accept a module' do
+      some_module = Module.new do
+        def responds_to_this_method?
+          true
+        end
+      end
+
+      dsl = described_class.new(capybara_page)
+      dsl.extend_element(some_module)
+
+      expect(dsl.element.responds_to_this_method?).to be_true
+    end
+
+    it 'can accept a block' do
+      dsl = described_class.new(capybara_page)
+      dsl.extend_element do
+        def responds_to_this_method?
+          true
+        end
+      end
+
+      expect(dsl.element.responds_to_this_method?).to be_true
+    end
+
+    it 'prefers the passed module with the block' do
+      some_module = Module.new do
+        def responds_to_module_method?
+          true
+        end
+
+        def responds_to_block_method?
+          false
+        end
+      end
+
+      dsl = described_class.new(capybara_page)
+
+      dsl.extend_element(some_module) do
+        def responds_to_block_method?
+          true
+        end
+      end
+
+      expect(dsl.element.responds_to_module_method?).to be_true
+      expect(dsl.element.responds_to_block_method?).to be_true
+    end
+  end
 end
