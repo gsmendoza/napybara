@@ -15,9 +15,9 @@ describe Napybara do
             visit '/test.html'
           end
 
-          form 'form' do
-            notice_updater 'button.update'
-            notice '.notice'
+          find :form, 'form' do
+            find :notice_updater, 'button.update'
+            find :notice, '.notice'
           end
         end
       end

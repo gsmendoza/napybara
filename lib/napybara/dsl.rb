@@ -13,9 +13,5 @@ module Napybara
         Napybara::DSL.build(self.find(child_element_selector), &block)
       end
     end
-
-    def method_missing(method, *args, &block)
-      find(method, args[0], &block)
-    end
   end
 end

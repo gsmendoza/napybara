@@ -17,7 +17,7 @@ describe Napybara::DSL do
 
     it 'adds child elements from the block to the return element' do
       element = described_class.build(capybara_page) do
-        form '.some-form'
+        find :form, '.some-form'
       end
 
       expect(element.form['class']).to eq('some-form')
