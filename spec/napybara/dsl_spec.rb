@@ -4,7 +4,13 @@ describe Napybara::DSL do
   let(:capybara_page) do
     Capybara.string <<-HTML
       <form class='some-form'>
-        <button class='some-button'></button>
+        <button class='some-button'>
+          <img />
+        </button>
+
+        <button class='another-button'>
+          <img />
+        </button>
       </form>
     HTML
   end
@@ -39,6 +45,28 @@ describe Napybara::DSL do
       end
 
       expect(dsl.element.form.button['class']).to eq('some-button')
+    end
+  end
+
+  describe '#all' do
+    it 'adds a method to get all the elements matching the selector' do
+      dsl = described_class.new(capybara_page)
+      dsl.all(:buttons, 'button')
+
+      expect(dsl.element.buttons).to have(2).elements
+      expect(dsl.element.buttons).to be_all do |element|
+        element.tag_name == 'button'
+      end
+    end
+
+    it 'adds child elements from the block to each element returned' do
+      dsl = described_class.new(capybara_page)
+      dsl.all(:buttons, 'button') do
+        find :img, 'img'
+      end
+
+      expect(dsl.element.buttons).to have(2).elements
+      expect(dsl.element.buttons[0].img.tag_name).to eq('img')
     end
   end
 end

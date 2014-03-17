@@ -13,5 +13,13 @@ module Napybara
         Napybara::DSL.build(self.find(child_element_selector), &block)
       end
     end
+
+    def all(child_element_name, child_element_selector, &block)
+      element.define_singleton_method(child_element_name) do
+        self.all(child_element_selector).each do |child_element|
+          Napybara::DSL.build(child_element, &block)
+        end
+      end
+    end
   end
 end
