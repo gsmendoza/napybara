@@ -7,6 +7,14 @@ module Napybara
       block.call(self) if block_given?
     end
 
+    def all(child_element_name, child_element_selector, &block)
+      self.define_singleton_method(child_element_name) do
+        self.get.all(child_element_selector).map do |child_element|
+          self.class.new(child_element, &block)
+        end
+      end
+    end
+
     def find(child_element_name, child_element_selector, &block)
       self.define_singleton_method(child_element_name) do
         self.class.new(self.get.find(child_element_selector), &block)
