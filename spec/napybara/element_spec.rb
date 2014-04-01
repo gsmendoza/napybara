@@ -48,11 +48,20 @@ describe Napybara::Element do
       expect(page.form.button.get['class']).to eq('some-button')
     end
 
-    it 'allows the element to find the element with an id' do
+    it 'allows the element to find a sub-element with an id' do
       page = described_class.new(capybara_page)
       page.find(:form, '#form-')
 
       object = OpenStruct.new(id: 1)
+
+      expect(page.form(object).get['class']).to eq('some-form')
+    end
+
+    it 'allows the element to find a sub-element with a record method' do
+      page = described_class.new(capybara_page)
+      page.find(:form, '#form-', :name)
+
+      object = OpenStruct.new(name: 1)
 
       expect(page.form(object).get['class']).to eq('some-form')
     end
