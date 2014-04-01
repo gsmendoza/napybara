@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Napybara::Element do
   let(:capybara_page) do
     Capybara.string <<-HTML
-      <form class='some-form'>
+      <form class='some-form', id='form-1'>
         <button class='some-button'>
           <img />
         </button>
@@ -46,6 +46,15 @@ describe Napybara::Element do
       end
 
       expect(page.form.button.get['class']).to eq('some-button')
+    end
+
+    it 'allows the element to find the element with an id' do
+      page = described_class.new(capybara_page)
+      page.find(:form, '#form-')
+
+      object = OpenStruct.new(id: 1)
+
+      expect(page.form(object).get['class']).to eq('some-form')
     end
   end
 
