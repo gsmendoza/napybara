@@ -85,5 +85,14 @@ describe Napybara::Element do
       expect(page.buttons).to have(2).elements
       expect(page.buttons[0].img.get.tag_name).to eq('img')
     end
+
+    it 'adds a method to check if the element has a sub-element matching a record' do
+      page = described_class.new(capybara_page)
+      page.finder(:form, '#form-')
+
+      object = OpenStruct.new(id: 1)
+
+      expect(page.has_form?(object)).to be_true
+    end
   end
 end
