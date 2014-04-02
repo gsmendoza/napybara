@@ -94,5 +94,14 @@ describe Napybara::Element do
 
       expect(page.has_form?(object)).to be_true
     end
+
+    it 'adds a method to check if the element has no sub-element matching a record' do
+      page = described_class.new(capybara_page)
+      page.finder(:form, '#form-')
+
+      object = OpenStruct.new(id: 1)
+
+      expect(page.has_no_form?(object)).to be_false
+    end
   end
 end

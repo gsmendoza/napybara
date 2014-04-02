@@ -29,6 +29,12 @@ module Napybara
         self.get.has_css?(selector)
       end
 
+      self.define_singleton_method("has_no_#{child_element_name}?") do |record|
+        record_id = record && record.public_send(method_name)
+        selector = "#{child_element_selector}#{record_id}"
+        self.get.has_no_css?(selector)
+      end
+
       self.define_singleton_method(child_element_name.to_s.pluralize) do
         self.get.all(child_element_selector).map do |child_element|
           self.class.new(child_element, &block)
