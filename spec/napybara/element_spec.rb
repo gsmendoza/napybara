@@ -65,12 +65,10 @@ describe Napybara::Element do
 
       expect(page.form(object).get['class']).to eq('some-form')
     end
-  end
 
-  describe '#all' do
     it 'adds a method to get all the elements matching the selector' do
       page = described_class.new(capybara_page)
-      page.all(:buttons, 'button')
+      page.finder(:button, 'button')
 
       expect(page.buttons).to have(2).elements
       expect(page.buttons).to be_all do |element|
@@ -80,7 +78,7 @@ describe Napybara::Element do
 
     it 'adds child elements from the block to each element returned' do
       page = described_class.new(capybara_page)
-      page.all(:buttons, 'button') do |button|
+      page.finder(:button, 'button') do |button|
         button.finder :img, 'img'
       end
 
