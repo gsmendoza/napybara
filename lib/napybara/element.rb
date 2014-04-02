@@ -15,7 +15,7 @@ module Napybara
       end
     end
 
-    def find(child_element_name, child_element_selector, method_name = :id, &block)
+    def finder(child_element_name, child_element_selector, method_name = :id, &block)
       self.define_singleton_method(child_element_name) do |record = nil|
         selector =
           if record

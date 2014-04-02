@@ -15,9 +15,9 @@ describe 'Napybara::Element#get' do
             get.visit '/test.html'
           end
 
-          page.find :form, 'form' do |form|
-            form.find :notice_updater, 'button.update'
-            form.find :notice, '.notice'
+          page.finder :form, 'form' do |form|
+            form.finder :notice_updater, 'button.update'
+            form.finder :notice, '.notice'
           end
         end
       end

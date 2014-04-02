@@ -24,25 +24,25 @@ describe Napybara::Element do
 
     it 'adds child elements from the block to the return element' do
       element = described_class.new(capybara_page) do |page|
-        page.find :form, '.some-form'
+        page.finder :form, '.some-form'
       end
 
       expect(element.form.get['class']).to eq('some-form')
     end
   end
 
-  describe '#find' do
+  describe '#finder' do
     it 'adds a method to the element for finding the given selector' do
       page = described_class.new(capybara_page)
-      page.find(:form, '.some-form')
+      page.finder(:form, '.some-form')
 
       expect(page.form.get['class']).to eq('some-form')
     end
 
     it 'adds child elements from the block to the finder element' do
       page = described_class.new(capybara_page)
-      page.find(:form, '.some-form') do |form|
-        form.find(:button, '.some-button')
+      page.finder(:form, '.some-form') do |form|
+        form.finder(:button, '.some-button')
       end
 
       expect(page.form.button.get['class']).to eq('some-button')
@@ -50,7 +50,7 @@ describe Napybara::Element do
 
     it 'allows the element to find a sub-element with an id' do
       page = described_class.new(capybara_page)
-      page.find(:form, '#form-')
+      page.finder(:form, '#form-')
 
       object = OpenStruct.new(id: 1)
 
@@ -59,7 +59,7 @@ describe Napybara::Element do
 
     it 'allows the element to find a sub-element with a record method' do
       page = described_class.new(capybara_page)
-      page.find(:form, '#form-', :name)
+      page.finder(:form, '#form-', :name)
 
       object = OpenStruct.new(name: 1)
 
@@ -81,7 +81,7 @@ describe Napybara::Element do
     it 'adds child elements from the block to each element returned' do
       page = described_class.new(capybara_page)
       page.all(:buttons, 'button') do |button|
-        button.find :img, 'img'
+        button.finder :img, 'img'
       end
 
       expect(page.buttons).to have(2).elements
