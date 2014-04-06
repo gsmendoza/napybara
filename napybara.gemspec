@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["gsmendoza@gmail.com"]
   spec.summary       = %q{napybara == nested capybara}
   spec.description   = %q{DSL for nesting capybara helpers}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/gsmendoza/napybara"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
