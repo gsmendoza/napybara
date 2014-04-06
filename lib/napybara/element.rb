@@ -16,12 +16,12 @@ module Napybara
         self.class.new(self.get.find(selector.to_s), &block)
       end
 
-      self.define_singleton_method("has_#{child_element_name}?") do |record|
+      self.define_singleton_method("has_#{child_element_name}?") do |record = nil|
         selector = Selector.new(child_element_selector, method_name, record)
         self.get.has_css?(selector.to_s)
       end
 
-      self.define_singleton_method("has_no_#{child_element_name}?") do |record|
+      self.define_singleton_method("has_no_#{child_element_name}?") do |record = nil|
         selector = Selector.new(child_element_selector, method_name, record)
         self.get.has_no_css?(selector.to_s)
       end
