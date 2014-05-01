@@ -50,7 +50,7 @@ describe Napybara::Element do
 
     it 'allows the element to find a sub-element with an id' do
       page = described_class.new(capybara_page)
-      page.finder(:form, '#form-')
+      page.finder(:form, '.some-form', '#form-{id}')
 
       object = OpenStruct.new(id: 1)
 
@@ -59,7 +59,7 @@ describe Napybara::Element do
 
     it 'allows the element to find a sub-element with a record method' do
       page = described_class.new(capybara_page)
-      page.finder(:form, '#form-', :name)
+      page.finder(:form, '.some-form', '#form-{name}')
 
       object = OpenStruct.new(name: 1)
 
@@ -88,7 +88,7 @@ describe Napybara::Element do
 
     it 'adds a method to check if the element has a sub-element matching a record' do
       page = described_class.new(capybara_page)
-      page.finder(:form, '#form-')
+      page.finder(:form, '.some-form', '#form-{id}')
 
       object = OpenStruct.new(id: 1)
 
@@ -97,7 +97,7 @@ describe Napybara::Element do
 
     it 'adds a method to check if the element has no sub-element matching a record' do
       page = described_class.new(capybara_page)
-      page.finder(:form, '#form-')
+      page.finder(:form, '.some-form', '#form-{id}')
 
       object = OpenStruct.new(id: 1)
 

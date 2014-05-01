@@ -63,7 +63,7 @@ describe 'Readme example:' do
 
     When "I add an object finder to the Napybara page wrapping the capybara page" do
       @messages_page = Napybara::Element.new(capybara_page) do |page|
-        page.finder :message, '#message-'
+        page.finder :message, '.message', '#message-{id}'
       end
     end
 
@@ -82,7 +82,7 @@ describe 'Readme example:' do
     When "I add finders to the Napybara page wrapping the capybara page" do
       @messages_page = Napybara::Element.new(capybara_page) do |page|
         page.finder :form, 'form.new-message'
-        page.finder :message, '#message-'
+        page.finder :message, '.message', '#message-{id}'
       end
     end
 
