@@ -19,7 +19,7 @@ So you're writing an integration test for the following page:
 </html>
 ```
 
-Wouldn't it be nice if you can write test helpers so that they followed the page structure?
+Wouldn't it be nice if your test helpers followed the page's structure?
 
 ```ruby
 messages_page.visit!
@@ -46,9 +46,9 @@ let(:messages_page) do
 end
 ```
 
-In Rails integration tests which use Capybara, `self` usually is the Capybara session.
+In Rails integration tests which use Capybara, `self` is usually the Capybara session.
 
-You can get the capybara element wrapped by the Napybara element with
+You can get the Capybara element wrapped by the Napybara element with
 `Napybara::Element#get`:
 
 ```ruby
@@ -90,7 +90,7 @@ end
 # ...
 
 expect(messages_page.message(some_message).get['id'])
-  .to eq("messages-#{some_message.id}")
+  .to eq("message-#{some_message.id}")
 
 ```
 
@@ -110,7 +110,7 @@ With the Napybara elements above, you can call:
 expect(messages_page.has_form?).to be_true
 expect(messages_page).to have_form
 
-expect(messages_page.has_message?(some_message).to be_true
+expect(messages_page.has_message?(some_message)).to be_true
 expect(messages_page).to have_message(some_message)
 
 non_existent_message = Message.find(3)
@@ -144,7 +144,7 @@ Napybara uses ActiveSupport to get the plural version of the finder name.
 
 ## Adding custom methods to a Napybara element
 
-We can add new methods to a Napybara element with plain Ruby:
+You can add new methods to a Napybara element with plain Ruby:
 
 ```ruby
 let(:messages_page) do
@@ -188,28 +188,70 @@ messages_page.visit!
 expect(messages_page).to be_visited
 ```
 
+## Extending a Napybara element with a module with finders
+
+And what if you want to share a module with finders? Again, with plain Ruby:
+
+```
+module IsAForm
+  def submit!
+    submit_button.get.click
+  end
+
+  def self.add_to(form)
+    form.extend self
+    form.finder :submit_button, 'input[type=submit]'
+  end
+end
+
+# ...
+
+page.finder :form, 'form.new-message' do |form|
+  IsAForm.add_to(form)
+end
+```
+
+It may not sexy, but it gets the job done :)
+
 ## Putting it all together
 
 Oh yeah, the "N" in Napybara stands for nesting. Here's how you can define the
 helpers at the start of this README:
 
 ```ruby
+
+module PageExtensions
+  def visit!
+    get.visit get.messages_path
+    @visited = true
+  end
+
+  def visited?
+    !! @visited
+  end
+end
+
+module IsAForm
+  def submit!
+    submit_button.get.click
+  end
+
+  def self.add_to(form)
+    form.extend self
+    form.finder :submit_button, 'input[type=submit]'
+  end
+end
+
 let(:messages_page) do
   Napybara::Element.new(capybara_page) do |page|
-    def page.visit!
-      get.visit get.messages_path
-    end
+    page.extend PageExtensions
 
     page.finder :form, 'form.new-message' do |form|
-      def form.submit!
-        submit_button.get.click
-      end
+      IsAForm.add_to form
 
       form.finder :message_row, '.message-row' do |row|
         row.finder :text_field, 'input[type=text]'
       end
-
-      form.finder :submit_button, 'input[type=submit]'
     end
 
     page.finder :message, '.message-list .message', '#message-{id}'
