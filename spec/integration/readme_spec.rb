@@ -11,7 +11,7 @@ describe 'Readme example:' do
             <li class="message" id="message-2">Kamusta mundo!</li>
           </ul>
           <form class='new-message'>
-            <div class="message-row" />
+            <div class="message-row">
               <label for='message'>Message</label>
               <input id='message' type='text' name='message'>
             </div>
@@ -167,6 +167,39 @@ describe 'Readme example:' do
     Then "I can call the custom methods in the module on the Napybara element" do
       @messages_page.visit!
       expect(@messages_page).to be_visited
+    end
+  end
+
+  Steps "Getting the selector of a finder" do
+    Given "I have a a capybara page" do
+      capybara_page
+    end
+
+    When "I wrap the page in a Napybara element" do
+      @messages_page = Napybara::Element.new(capybara_page) do |page|
+        page.finder :form, 'form.new-message' do |form|
+
+          form.finder :message_row, '.message-row' do |row|
+            row.finder :text_field, 'input[type=text]'
+          end
+        end
+
+        page.finder :message, '.messages-list .message', '#message-{id}'
+      end
+    end
+
+    Then "I can get the selectors of the Napybara finder results" do
+      expect(@messages_page.form.message_row.text_field.selector)
+        .to eq('form.new-message .message-row input[type=text]')
+
+      expect(@messages_page.message(OpenStruct.new(id: 2)).selector)
+        .to eq('#message-2')
+
+      expect(@messages_page.messages.selector)
+        .to eq('.messages-list .message')
+
+      expect(@messages_page.messages[1].selector)
+        .to eq('.messages-list .message')
     end
   end
 end

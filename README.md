@@ -107,7 +107,7 @@ If the ruby object is identified by a method other than the object's id, you can
 `Napybara::Element#finder` also adds `has_` and `has_no_` methods to the element.
 With the Napybara elements above, you can call:
 
-```
+```ruby
 expect(messages_page.has_form?).to be_true
 expect(messages_page).to have_form
 
@@ -193,7 +193,7 @@ expect(messages_page).to be_visited
 
 And what if you want to share a module with finders? Again, with plain Ruby:
 
-```
+```ruby
 module IsAForm
   def submit!
     submit_button.node.click
@@ -259,6 +259,27 @@ let(:messages_page) do
   end
 end
 ```
+
+## And a few more things: getting the selector of a finder
+
+`Napybara::Element#selector` returns a selector that can be used to find the element:
+
+```ruby
+expect(messages_page.form.message_row.text_field.selector)
+  .to eq('form.new-message .message-row input[type=text]')
+
+expect(messages_page.message(Message.find(2)).selector)
+  .to eq('#message-2')
+
+expect(messages_page.messages.selector)
+  .to eq('.message-list .message')
+
+expect(messages_page.messages[1].selector)
+  .to eq('.message-list .message')
+
+```
+
+Take note that with `messages_page.messages[1]`, it's currently not possible to get the ith match of a selector. We'll have to wait until [`nth-match`](http://www.w3.org/TR/selectors4/#nth-match-pseudo) becomes mainstream.
 
 ## Installation
 

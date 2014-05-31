@@ -104,4 +104,80 @@ describe Napybara::Element do
       expect(page.has_no_form?(object)).to be_false
     end
   end
+
+  describe "#selector" do
+    it "can return the selector for a single element" do
+      napybara_page = described_class.new(capybara_page) do |page|
+        page.finder :form, '.some-form'
+      end
+
+      expect(napybara_page.form.selector).to eq('.some-form')
+    end
+
+    it "can return the selector for an element nested one layer" do
+      napybara_page = described_class.new(capybara_page) do |page|
+        page.finder :form, '.some-form' do |form|
+          form.finder :some_button, '.some-button'
+        end
+      end
+
+      expect(napybara_page.form.some_button.selector).to eq('.some-form .some-button')
+    end
+
+    it "can return the selector for an element nested more than one layer" do
+      napybara_page = described_class.new(capybara_page) do |page|
+        page.finder :form, '.some-form' do |form|
+          form.finder :some_button, '.some-button' do |button|
+            button.finder :img, 'img'
+          end
+        end
+      end
+
+      expect(napybara_page.form.some_button.img.selector)
+        .to eq('.some-form .some-button img')
+    end
+
+    it "can return the selector for an element array" do
+      napybara_page = described_class.new(capybara_page) do |page|
+        page.finder :button, 'button'
+      end
+
+      expect(napybara_page.buttons.selector).to eq('button')
+    end
+
+    context "where the items of the element array are not adjacent" do
+      let(:capybara_page) do
+        Capybara.string <<-HTML
+          <form class='some-form', id='form-1'>
+            <button class='recognized-button some-button' />
+            <button class='ignored-button' />
+            <button class='recognized-button another-button' />
+          </form>
+        HTML
+      end
+
+      it "can return the selector of the ith item of an element array" do
+        napybara_page = described_class.new(capybara_page) do |page|
+          page.finder :button, '.recognized-button'
+        end
+
+        first_button = napybara_page.buttons[1]
+
+        expect(first_button.selector).to eq('.recognized-button')
+
+        expect(napybara_page.node.all(first_button.selector)[1]['class'])
+          .to eq('recognized-button another-button')
+      end
+    end
+
+    it "can return the selector of an child of an element array item" do
+      napybara_page = described_class.new(capybara_page) do |page|
+        page.finder :button, 'button' do |button|
+          button.finder :image, 'img'
+        end
+      end
+
+      expect(napybara_page.buttons[0].image.selector).to eq('button img')
+    end
+  end
 end

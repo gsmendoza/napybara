@@ -2,7 +2,9 @@
 
 ## master
 
-Rename #get as #node. #get may become deprecated soon.
+Rename `#get` as #node. `#get` may become deprecated soon.
+
+Add `#selector`.
 
 ## 0.4.1
 
