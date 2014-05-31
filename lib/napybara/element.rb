@@ -2,11 +2,11 @@ require 'napybara'
 
 module Napybara
   class Element
-    attr_reader :capybara_element
-    alias_method :get, :capybara_element
+    attr_reader :node
+    alias_method :get, :node
 
-    def initialize(capybara_element, &block)
-      @capybara_element = capybara_element
+    def initialize(node, &block)
+      @node = node
       block.call(self) if block_given?
     end
 

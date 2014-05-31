@@ -19,12 +19,13 @@ So you're writing an integration test for the following page:
 </html>
 ```
 
-Wouldn't it be nice if your test helpers followed the page's structure?
+Wouldn't it be nice if you can write test helpers that followed the page's
+structure?
 
 ```ruby
 messages_page.visit!
 
-messages_page.form.message_row.text_field.get.set 'Hello World!'
+messages_page.form.message_row.text_field.node.set 'Hello World!'
 messages_page.form.submit!
 
 expect(messages_page.message(Message.find(1))).to have_content('Hello world!')
@@ -36,7 +37,7 @@ expect(messages_page.messages[1]).to have_content('Kamusta mundo!')
 
 With Napybara, now you can!
 
-## Napybara::Element.new and #get
+## Napybara::Element.new and #node
 
 First off, let's wrap the Capybara session in a Napybara element:
 
@@ -49,10 +50,10 @@ end
 In Rails integration tests which use Capybara, `self` is usually the Capybara session.
 
 You can get the Capybara element wrapped by the Napybara element with
-`Napybara::Element#get`:
+`Napybara::Element#node`:
 
 ```ruby
-expect(messages_page.get).to eq(self)
+expect(messages_page.node).to eq(self)
 ```
 
 ## Finding by selector
@@ -68,7 +69,7 @@ end
 
 # ...
 
-expect(messages_page.form.get['class']).to eq('new-message')
+expect(messages_page.form.node['class']).to eq('new-message')
 ```
 
 ## Finding by object
@@ -89,7 +90,7 @@ end
 
 # ...
 
-expect(messages_page.message(some_message).get['id'])
+expect(messages_page.message(some_message).node['id'])
   .to eq("message-#{some_message.id}")
 
 ```
@@ -136,8 +137,8 @@ end
 
 # ...
 
-expect(messages_page.messages[0].get.text).to eq("Hello world!")
-expect(messages_page.messages[1].get.text).to eq("Kamusta mundo!")
+expect(messages_page.messages[0].node.text).to eq("Hello world!")
+expect(messages_page.messages[1].node.text).to eq("Kamusta mundo!")
 ```
 
 Napybara uses ActiveSupport to get the plural version of the finder name.
@@ -150,7 +151,7 @@ You can add new methods to a Napybara element with plain Ruby:
 let(:messages_page) do
   Napybara::Element.new(self) do |page|
     def page.visit!
-      get.visit get.messages_path
+      node.visit node.messages_path
     end
   end
 end
@@ -167,7 +168,7 @@ Adding the same methods to multiple Napybara elements? You can share the methods
 ```ruby
 module PageExtensions
   def visit!
-    get.visit get.messages_path
+    node.visit node.messages_path
     @visited = true
   end
 
@@ -195,7 +196,7 @@ And what if you want to share a module with finders? Again, with plain Ruby:
 ```
 module IsAForm
   def submit!
-    submit_button.get.click
+    submit_button.node.click
   end
 
   def self.add_to(form)
@@ -222,7 +223,7 @@ helpers at the start of this README:
 
 module PageExtensions
   def visit!
-    get.visit get.messages_path
+    node.visit node.messages_path
     @visited = true
   end
 
@@ -233,7 +234,7 @@ end
 
 module IsAForm
   def submit!
-    submit_button.get.click
+    submit_button.node.click
   end
 
   def self.add_to(form)
@@ -243,7 +244,7 @@ module IsAForm
 end
 
 let(:messages_page) do
-  Napybara::Element.new(capybara_page) do |page|
+  Napybara::Element.new(self) do |page|
     page.extend PageExtensions
 
     page.finder :form, 'form.new-message' do |form|

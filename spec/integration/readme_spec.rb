@@ -30,8 +30,8 @@ describe 'Readme example:' do
       @messages_page = Napybara::Element.new(capybara_page)
     end
 
-    And "I call #get on the Napybara page" do
-      @get_result = @messages_page.get
+    And "I call #node on the Napybara page" do
+      @get_result = @messages_page.node
     end
 
     Then "I should get the capybara page" do
@@ -52,7 +52,7 @@ describe 'Readme example:' do
 
     Then "the finder should be able to find the element matching the selector" do
 
-      expect(@messages_page.form.get['class']).to eq('new-message')
+      expect(@messages_page.form.node['class']).to eq('new-message')
     end
   end
 
@@ -70,7 +70,7 @@ describe 'Readme example:' do
     Then "the finder should be able to find the element matching a given object" do
       id = 1
       message = OpenStruct.new(id: id)
-      expect(@messages_page.message(message).get['id']).to eq("message-#{id}")
+      expect(@messages_page.message(message).node['id']).to eq("message-#{id}")
     end
   end
 
@@ -114,8 +114,8 @@ describe 'Readme example:' do
     Then "I should be able to find all the elements matching the selector with
       a plural version of the finder name" do
 
-      expect(@messages_page.message_items[0].get.text).to eq("Hello world!")
-      expect(@messages_page.message_items[1].get.text).to eq("Kamusta mundo!")
+      expect(@messages_page.message_items[0].node.text).to eq("Hello world!")
+      expect(@messages_page.message_items[1].node.text).to eq("Kamusta mundo!")
     end
   end
 
