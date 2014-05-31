@@ -1,5 +1,7 @@
 # Napybara
 
+[![Build Status](https://api.travis-ci.org/gsmendoza/napybara.svg)](https://travis-ci.org/gsmendoza/napybara)
+
 So you're writing an integration test for the following page:
 
 ```html
