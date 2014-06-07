@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "overcommit"
   spec.add_development_dependency "poltergeist"
   spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec", "~> 2.14.0"
   spec.add_development_dependency "rspec-example_steps"
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "sinatra"
