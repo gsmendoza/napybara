@@ -110,14 +110,14 @@ If the ruby object is identified by a method other than the object's id, you can
 With the Napybara elements above, you can call:
 
 ```ruby
-expect(messages_page.has_form?).to be_true
+expect(messages_page.has_form?).to eq(true)
 expect(messages_page).to have_form
 
-expect(messages_page.has_message?(some_message)).to be_true
+expect(messages_page.has_message?(some_message)).to eq(true)
 expect(messages_page).to have_message(some_message)
 
 non_existent_message = Message.find(3)
-expect(messages_page.has_no_message?(non_existent_message)).to be_true
+expect(messages_page.has_no_message?(non_existent_message)).to eq(true)
 expect(messages_page).to have_no_message(non_existent_message)
 ```
 

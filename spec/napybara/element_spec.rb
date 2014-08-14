@@ -70,7 +70,7 @@ describe Napybara::Element do
       page = described_class.new(capybara_page)
       page.finder(:button, 'button')
 
-      expect(page.buttons).to have(2).elements
+      expect(page.buttons.size).to eq(2)
       expect(page.buttons).to be_all do |element|
         element.get.tag_name == 'button'
       end
@@ -82,7 +82,7 @@ describe Napybara::Element do
         button.finder :img, 'img'
       end
 
-      expect(page.buttons).to have(2).elements
+      expect(page.buttons.size).to eq(2)
       expect(page.buttons[0].img.get.tag_name).to eq('img')
     end
 
@@ -92,7 +92,7 @@ describe Napybara::Element do
 
       object = OpenStruct.new(id: 1)
 
-      expect(page.has_form?(object)).to be_true
+      expect(page.has_form?(object)).to eq(true)
     end
 
     it 'adds a method to check if the element has no sub-element matching a record' do
@@ -101,7 +101,7 @@ describe Napybara::Element do
 
       object = OpenStruct.new(id: 1)
 
-      expect(page.has_no_form?(object)).to be_false
+      expect(page.has_no_form?(object)).to eq(false)
     end
   end
 
