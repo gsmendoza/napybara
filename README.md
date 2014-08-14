@@ -6,6 +6,9 @@ So you're writing an integration test for the following page:
 
 ```html
 <html>
+  <head>
+    <title>Your messages</title>
+  </head>
   <body>
     <ul class='message-list'>
       <li class="message" id="message-1">Hello world!</li>
@@ -102,7 +105,6 @@ given selector (`#message-{id}`) with `some_message`'s id (`1`). So it ends up
 looking for "#message-1".
 
 If the ruby object is identified by a method other than the object's id, you can replace `{id}` with the method e.g. `{name}`, `{to_s}`.
-
 
 ## Checking if an element exists
 
@@ -215,6 +217,23 @@ end
 ```
 
 It may not sexy, but it gets the job done :)
+
+### Passing Capybara options to the finder
+
+You can pass Capybara options to the finder:
+
+```ruby
+let(:messages_page) do
+  Napybara::Element.new(self) do |page|
+    page.finder :title, 'head title', visible: false
+  end
+end
+
+# ...
+
+expect(page.title.node.text).to eq('Your messages')
+
+```
 
 ## Putting it all together
 

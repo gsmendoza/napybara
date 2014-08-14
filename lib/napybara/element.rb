@@ -14,12 +14,26 @@ module Napybara
       block.call(self) if block_given?
     end
 
-    def finder(child_element_name, child_element_selector, record_selector = nil, &block)
+    def finder(child_element_name, child_element_selector, *optional_args, &block)
+      record_selector = nil
+      capybara_options = {}
+
+      if optional_args.size > 0
+        if optional_args[0].is_a?(Hash)
+          capybara_options = optional_args[0]
+        else
+          record_selector = optional_args[0]
+        end
+      end
+
       self.define_singleton_method(child_element_name) do |record = nil|
         selector = Selector.new(child_element_selector, record_selector, record)
         selector_string = selector.to_s
 
-        self.class.new(self.get.find(selector_string), self, selector_string, &block)
+        capybara_element =
+          self.get.find(selector_string, capybara_options)
+
+        self.class.new(capybara_element, self, selector_string, &block)
       end
 
       self.define_singleton_method("has_#{child_element_name}?") do |record = nil|

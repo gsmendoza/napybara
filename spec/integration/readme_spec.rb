@@ -5,6 +5,9 @@ describe 'Readme example:' do
   let(:capybara_page) do
     Capybara.string <<-HTML
       <html>
+        <head>
+          <title>Your messages</title>
+        </head>
         <body>
           <ul class='messages-list'>
             <li class="message" id="message-1">Hello world!</li>
@@ -200,6 +203,22 @@ describe 'Readme example:' do
 
       expect(@messages_page.messages[1].selector)
         .to eq('.messages-list .message')
+    end
+  end
+
+  Steps "Passing Capybara options to a finder" do
+    Given "I have a capybara page" do
+      capybara_page
+    end
+
+    When "I pass Capybara options to the finder" do
+      @messages_page = Napybara::Element.new(capybara_page) do |page|
+        page.finder :title, 'head title', visible: false
+      end
+    end
+
+    Then "I should see that those options were passed to the finder's node" do
+      expect(@messages_page.title.node.text).to eq('Your messages')
     end
   end
 end
