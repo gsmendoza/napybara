@@ -31,4 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-example_steps"
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "sinatra"
+  spec.add_development_dependency "verified_double"
 end

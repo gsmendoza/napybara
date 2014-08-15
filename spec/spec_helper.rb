@@ -1,3 +1,5 @@
 require 'capybara'
 require 'rspec/example_steps'
 require 'napybara'
+require 'verified_double'
+require 'verified_double/rspec_configuration'
