@@ -6,6 +6,9 @@ So you're writing an integration test for the following page:
 
 ```html
 <html>
+  <head>
+    <title>Your messages</title>
+  </head>
   <body>
     <ul class='message-list'>
       <li class="message" id="message-1">Hello world!</li>
@@ -103,21 +106,20 @@ looking for "#message-1".
 
 If the ruby object is identified by a method other than the object's id, you can replace `{id}` with the method e.g. `{name}`, `{to_s}`.
 
-
 ## Checking if an element exists
 
 `Napybara::Element#finder` also adds `has_` and `has_no_` methods to the element.
 With the Napybara elements above, you can call:
 
 ```ruby
-expect(messages_page.has_form?).to be_true
+expect(messages_page.has_form?).to eq(true)
 expect(messages_page).to have_form
 
-expect(messages_page.has_message?(some_message)).to be_true
+expect(messages_page.has_message?(some_message)).to eq(true)
 expect(messages_page).to have_message(some_message)
 
 non_existent_message = Message.find(3)
-expect(messages_page.has_no_message?(non_existent_message)).to be_true
+expect(messages_page.has_no_message?(non_existent_message)).to eq(true)
 expect(messages_page).to have_no_message(non_existent_message)
 ```
 
@@ -215,6 +217,23 @@ end
 ```
 
 It may not sexy, but it gets the job done :)
+
+### Passing Capybara options to the finder
+
+You can pass Capybara options to the finder:
+
+```ruby
+let(:messages_page) do
+  Napybara::Element.new(self) do |page|
+    page.finder :title, 'head title', visible: false
+  end
+end
+
+# ...
+
+expect(page.title.node.text).to eq('Your messages')
+
+```
 
 ## Putting it all together
 
