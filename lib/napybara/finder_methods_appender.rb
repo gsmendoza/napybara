@@ -21,9 +21,9 @@ module Napybara
 
     def capybara_options
       return {} if optional_args.empty?
-      return {} if !optional_args[0].is_a?(Hash)
+      return {} if !optional_args.last.is_a?(Hash)
 
-      optional_args[0]
+      optional_args.last
     end
 
     def execute
