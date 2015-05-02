@@ -21,6 +21,14 @@ module Napybara
       appender.execute
     end
 
+    def inspect
+      %(#<Napybara::Element selector="#{selector}">)
+    end
+
+    def root
+      parent ? parent.parent : self
+    end
+
     def selector
       parent_selector = parent.try(:selector)
       parent_selector ? "#{parent_selector} #{selector_string}" : selector_string

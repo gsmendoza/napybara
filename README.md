@@ -130,7 +130,7 @@ friendly `has_no_css?` method.
 
 ## Finding all elements matching a selector
 
-Finally, `Napybara::Element#finder` adds a pluralized version of the finder. For example,
+`Napybara::Element#finder` adds a pluralized version of the finder. For example,
 
 ```ruby
 let(:messages_page) do
@@ -146,6 +146,28 @@ expect(messages_page.messages[1].node.text).to eq("Kamusta mundo!")
 ```
 
 Napybara uses ActiveSupport to get the plural version of the finder name.
+
+## Finding the parent and root of an element
+
+You can also get the parent and root of an element:
+
+```ruby
+let(:messages_page) do
+  Napybara::Element.new(self) do |page|
+    page.finder :message_list, '.message-list' do |message_list|
+      message_list.finder :message, '.message'
+    end
+  end
+end
+
+# ...
+
+expect(messages_page.message_list.messages[0].parent.selector)
+  .to eq(messages_page.message_list.selector)
+
+expect(messages_page.message_list.messages[0].root.selector)
+  .to eq(messages_page.selector)
+```
 
 ## Adding custom methods to a Napybara element
 

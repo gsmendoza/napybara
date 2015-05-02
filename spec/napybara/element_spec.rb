@@ -180,4 +180,19 @@ describe Napybara::Element do
       expect(napybara_page.buttons[0].image.selector).to eq('button img')
     end
   end
+
+  describe "#inspect" do
+    let(:napybara_page) do
+      described_class.new(capybara_page) do |page|
+        page.finder :button, 'button' do |button|
+          button.finder :image, 'img'
+        end
+      end
+    end
+
+    it "includes only the selector of the element" do
+      expect(napybara_page.buttons[0].image.inspect)
+        .to eq('#<Napybara::Element selector="button img">')
+    end
+  end
 end

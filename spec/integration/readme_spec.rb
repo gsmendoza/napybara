@@ -221,4 +221,28 @@ describe 'Readme example:' do
       expect(@messages_page.title.node.text).to eq('Your messages')
     end
   end
+
+  context do
+    let(:messages_page) do
+      Napybara::Element.new(capybara_page) do |page|
+        page.finder :message_list, '.messages-list' do |message_list|
+          message_list.finder :message, '.message'
+        end
+      end
+    end
+
+    Steps 'Finding the parent and root of an element' do
+      Given "I have a element with a child and grandchildren" do
+        messages_page
+      end
+
+      Then "I should be able to get the parent and root of that element" do
+        expect(messages_page.message_list.messages[0].parent.selector)
+          .to eq(messages_page.message_list.selector)
+
+        expect(messages_page.message_list.messages[0].root.selector)
+          .to eq(messages_page.selector)
+      end
+    end
+  end
 end
