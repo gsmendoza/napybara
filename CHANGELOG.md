@@ -1,5 +1,9 @@
 # Changelog
 
+## Master
+
+* Make Napybara::Element#inspect more readable.
+
 ## 0.6.0
 
 Allow Capybara options to be passed to finders.
