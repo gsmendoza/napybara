@@ -147,20 +147,26 @@ expect(messages_page.messages[1].node.text).to eq("Kamusta mundo!")
 
 Napybara uses ActiveSupport to get the plural version of the finder name.
 
-## Finding the parent of an element
+## Finding the parent and root of an element
 
-You can also get the parent of an element:
+You can also get the parent and root of an element:
 
 ```ruby
 let(:messages_page) do
   Napybara::Element.new(self) do |page|
-    page.finder :message, '.message'
+    page.finder :message_list, '.message-list' do |message_list|
+      message_list.finder :message, '.message'
+    end
   end
 end
 
 # ...
 
-expect(messages_page.messages[0].parent).to eq(messages_page)
+expect(messages_page.message_list.messages[0].parent.selector)
+  .to eq(messages_page.message_list.selector)
+
+expect(messages_page.message_list.messages[0].root.selector)
+  .to eq(messages_page.selector)
 ```
 
 ## Adding custom methods to a Napybara element

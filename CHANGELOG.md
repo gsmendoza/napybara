@@ -3,6 +3,7 @@
 ## Master
 
 * Make Napybara::Element#inspect more readable.
+* Be able to find the root of an element.
 
 ## 0.6.0
 

@@ -222,22 +222,27 @@ describe 'Readme example:' do
     end
   end
 
-  Steps "Finding the parent of an element" do
-    Given "I have a element with a child" do
-      capybara_page
+  context do
+    let(:messages_page) do
+      Napybara::Element.new(capybara_page) do |page|
+        page.finder :message_list, '.messages-list' do |message_list|
+          message_list.finder :message, '.message'
+        end
+      end
+    end
 
-      @parent = Napybara::Element.new(capybara_page) do |page|
-        page.finder :child, 'form.new-message'
+    Steps 'Finding the parent and root of an element' do
+      Given "I have a element with a child and grandchildren" do
+        messages_page
       end
 
-      @child = @parent.child
-    end
+      Then "I should be able to get the parent and root of that element" do
+        expect(messages_page.message_list.messages[0].parent.selector)
+          .to eq(messages_page.message_list.selector)
 
-    When "I get the parent of that child" do
-    end
-
-    Then "I should get the element" do
-      expect(@child.parent).to eq(@parent)
+        expect(messages_page.message_list.messages[0].root.selector)
+          .to eq(messages_page.selector)
+      end
     end
   end
 end
