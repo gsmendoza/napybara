@@ -221,4 +221,23 @@ describe 'Readme example:' do
       expect(@messages_page.title.node.text).to eq('Your messages')
     end
   end
+
+  Steps "Finding the parent of an element" do
+    Given "I have a element with a child" do
+      capybara_page
+
+      @parent = Napybara::Element.new(capybara_page) do |page|
+        page.finder :child, 'form.new-message'
+      end
+
+      @child = @parent.child
+    end
+
+    When "I get the parent of that child" do
+    end
+
+    Then "I should get the element" do
+      expect(@child.parent).to eq(@parent)
+    end
+  end
 end
